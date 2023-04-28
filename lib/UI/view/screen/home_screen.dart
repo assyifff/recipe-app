@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_card/image_card.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -327,6 +328,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       )
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      // FillImageCard(imageProvider: imageProvider),
                     ],
                   ),
                 )
