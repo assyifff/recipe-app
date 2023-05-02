@@ -1,62 +1,77 @@
+// ignore_for_file: file_names
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 class RecipeHelper {
-  static RecipeHelper? _recipeHelper;
-  static late Database _database;
+  late Database database;
+  static RecipeHelper recipeHelper = RecipeHelper();
+  final String tableName = 'recipeData';
+  final String titleColumn = 'title';
+  final String idColumn = 'id';
+  final String isSavedColumn = 'isSaved';
+  final String ingredientsColumn = 'ingredients';
+  final String stepsColumn = 'steps';
+  final String cookTimeColumn = 'cookTime';
+  final String imageColumn = 'image';
+  final String servesColumn = 'serves';
+  final String caloriesColumn = 'calories';
 
-  RecipeHelper._internal() {
-    _recipeHelper = this;
+  initDatabase() async {
+    database = await connectToDatabase();
   }
 
-  factory RecipeHelper() => _recipeHelper ?? RecipeHelper._internal();
-
-  Future<Database> get database async {
-    _database = await _initializeDB();
-    return _database;
-  }
-
-  final String _tableName = 'recipe';
-
-  Future<Database> _initializeDB() async {
-    final db = openDatabase(join(await getDatabasesPath(), 'recipe_db.db'),
-        onCreate: (db, version) async {
-      await db.execute(
-        '''CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, title TEXT, serves TEXT, cookTime TEXT, ingredients TEXT, steps TEXT)''',
-      );
-    }, version: 1);
-
-    return db;
-  }
-
-  Future<void> insertRecipe(RecipeModel recipeModel) async {
-    final db = await database;
-    await db.insert(_tableName, recipeModel.toMap());
-  }
-
-  Future<List<RecipeModel>> getRecipe() async {
-    final db = await database;
-    List<Map<String, dynamic>> results = await db.query(_tableName);
-    return results.map((e) => RecipeModel.fromMap(e)).toList();
-  }
-
-  Future<void> updateRecipe(RecipeModel recipeModel) async {
-    final db = await database;
-    await db.update(
-      _tableName,
-      recipeModel.toMap(),
-      where: 'id = ?',
-      whereArgs: [recipeModel.id],
+  Future<Database> connectToDatabase() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = '$directory/recipeTable.db';
+    return openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) {
+        db.execute(
+            'CREATE TABLE $tableName ($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $titleColumn TEXT,$caloriesColumn INTEGER, $servesColumn INTEGER, $cookTimeColumn INTEGER, $isSavedColumn INTEGER, $ingredientsColumn TEXT, $stepsColumn TEXT, $imageColumn TEXT)');
+      },
     );
   }
 
-  Future<void> deleteRecipe(int id) async {
-    final db = await database;
-    await db.delete(
-      _tableName,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+  Future<List<RecipeModel>> getAllRecipes() async {
+    List<Map<String, dynamic>> tasks = await database.query(tableName);
+    return tasks.map((e) => RecipeModel.fromMap(e)).toList();
+  }
+
+  insertNewRecipe(RecipeModel recipeModel) {
+    database.insert(tableName, recipeModel.toMap());
+  }
+
+  deleteRecipe(RecipeModel recipeModel) {
+    database
+        .delete(tableName, where: '$idColumn=?', whereArgs: [recipeModel.id]);
+  }
+
+  // deleteRecipes() {
+  //   database.delete(tableName);
+  // }
+
+  updateRecipe(RecipeModel recipeModel) async {
+    await database.update(
+        tableName,
+        {
+          isSavedColumn: recipeModel.isSaved ? 1 : 0,
+          titleColumn: recipeModel.title,
+          caloriesColumn: recipeModel.calories,
+          servesColumn: recipeModel.serves,
+          cookTimeColumn: recipeModel.cookTime,
+          imageColumn: recipeModel.image!.path,
+          ingredientsColumn: recipeModel.ingredients,
+          stepsColumn: recipeModel.steps,
+        },
+        where: '$idColumn=?',
+        whereArgs: [recipeModel.id]);
+  }
+
+  updateIsFavorite(RecipeModel recipeModel) {
+    database.update(tableName, {isSavedColumn: !recipeModel.isSaved ? 1 : 0},
+        where: '$idColumn=?', whereArgs: [recipeModel.id]);
   }
 }
