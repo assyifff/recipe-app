@@ -1,31 +1,60 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:recipe_app/core/helper/recipe_helper.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
 
-class RecipeProvider with ChangeNotifier {
-  final RecipeHelper _recipeHelper = RecipeHelper();
-  List<RecipeModel> _recipes = [];
+class RecipeProvider extends ChangeNotifier {
+  RecipeProvider() {
+    getRecipes();
+  }
 
-  List<RecipeModel> get recipes => _recipes;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController caloriesController = TextEditingController();
+  TextEditingController servesController = TextEditingController();
+  TextEditingController cookTimeController = TextEditingController();
+  TextEditingController stepsController = TextEditingController();
+  TextEditingController ingredientsController = TextEditingController();
+  File? image;
 
-  void getAllRecipes() async {
-    _recipes = await _recipeHelper.getRecipe();
+  List<RecipeModel> allRecipes = [];
+  List<RecipeModel> favoriteRecipes = [];
+  getRecipes() async {
+    allRecipes = await RecipeHelper.recipeHelper.getAllRecipes();
+    favoriteRecipes = allRecipes.where((e) => e.isSaved).toList();
     notifyListeners();
   }
 
-  void addRecipe(RecipeModel recipeModel) async {
-    await _recipeHelper.insertRecipe(recipeModel);
-    notifyListeners();
-    getAllRecipes();
+  insertNewRecipe() {
+    RecipeModel recipeModel = RecipeModel(
+      isSaved: false,
+      title: titleController.text,
+      image: image,
+      calories: int.parse(
+          caloriesController.text != '' ? caloriesController.text : '0'),
+      ingredients: ingredientsController.text,
+      serves:
+          int.parse(servesController.text != '' ? servesController.text : '0'),
+      steps: stepsController.text,
+      cookTime: int.parse(
+          cookTimeController.text != '' ? cookTimeController.text : '0'),
+    );
+    RecipeHelper.recipeHelper.insertNewRecipe(recipeModel);
+    getRecipes();
   }
 
-  void updateContact(RecipeModel recipeModel) async {
-    await _recipeHelper.updateRecipe(recipeModel);
-    getAllRecipes();
+  updateRecipe(RecipeModel recipeModel) async {
+    await RecipeHelper.recipeHelper.updateRecipe(recipeModel);
+    getRecipes();
   }
 
-  void deleteContact(int id) async {
-    await _recipeHelper.deleteRecipe(id);
-    getAllRecipes();
+  deleteRecipe(RecipeModel recipeModel) {
+    RecipeHelper.recipeHelper.deleteRecipe(recipeModel);
+    getRecipes();
+  }
+
+  updateIsFavorite(RecipeModel recipeModel) {
+    RecipeHelper.recipeHelper.updateIsFavorite(recipeModel);
+    getRecipes();
   }
 }

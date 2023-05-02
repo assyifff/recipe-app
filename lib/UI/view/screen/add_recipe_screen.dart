@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
-import 'package:recipe_app/UI/view_model/recipe_provider.dart';
-import 'package:recipe_app/core/model/recipe_model.dart';
 
 class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key});
@@ -81,8 +78,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final addRecipeProvider =
-        Provider.of<RecipeProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -380,21 +375,21 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        addRecipeProvider.addRecipe(RecipeModel(
-                          title: _titleController.text,
-                          serves: _serveController.text,
-                          cookTime: _timeController.text,
-                          ingredients: _ingredientsController.text,
-                          steps: _stepsController.text,
-                        ));
-                        Navigator.pushReplacementNamed(context, '/');
-                        _titleController.clear();
-                        _serveController.clear();
-                        _timeController.clear();
-                        _ingredientsController.clear();
-                        _stepsController.clear();
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   addRecipeProvider.addRecipe(RecipeModel(
+                      //     title: _titleController.text,
+                      //     serves: _serveController.text,
+                      //     cookTime: _timeController.text,
+                      //     ingredients: _ingredientsController.text,
+                      //     steps: _stepsController.text,
+                      //   ));
+                      //   Navigator.pushReplacementNamed(context, '/');
+                      //   _titleController.clear();
+                      //   _serveController.clear();
+                      //   _timeController.clear();
+                      //   _ingredientsController.clear();
+                      //   _stepsController.clear();
+                      // }
                     },
                     style: ButtonStyle(
                         fixedSize: const MaterialStatePropertyAll(
