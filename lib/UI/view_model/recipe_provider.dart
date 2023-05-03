@@ -57,4 +57,17 @@ class RecipeProvider extends ChangeNotifier {
     RecipeHelper.recipeHelper.updateIsFavorite(recipeModel);
     getRecipes();
   }
+
+  Future<File?> getImageFile(String? imagePath) async {
+    if (imagePath == null || imagePath.isEmpty) {
+      return null;
+    }
+
+    final imageFile = File(imagePath);
+    if (await imageFile.exists()) {
+      return imageFile;
+    } else {
+      return null;
+    }
+  }
 }

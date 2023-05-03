@@ -14,7 +14,8 @@ dependencies:
   image_card: ^0.0.4
   sqflite: ^2.2.7
   path: ^1.8.2
-  path_provider: ^2.0.14
+  path_provider: ^2.0.11
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/image/edit.png
+    - assets/image/food_logo.jpg
     
   fonts:
     - family: Poppins
