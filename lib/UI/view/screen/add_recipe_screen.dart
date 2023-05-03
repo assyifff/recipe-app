@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
+import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 
 class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key});
@@ -10,74 +14,24 @@ class AddRecipeScreen extends StatefulWidget {
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
   ColorStyle colorStyle = ColorStyle();
-  final _titleController = TextEditingController();
-  final _serveController = TextEditingController();
-  final _timeController = TextEditingController();
-  final _ingredientsController = TextEditingController();
-  final _stepsController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  List<String?> serveItems = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '> 10'
-  ];
+  Future pickImage(BuildContext context, ImageSource source) async {
+    final image = await ImagePicker().pickImage(source: source);
+    if (image == null) return;
+    // ignore: use_build_context_synchronously
+    final picked = Provider.of<RecipeProvider>(context, listen: false).image =
+        File(image.path);
+    setState(() {});
+    print('image picked $picked');
+  }
 
-  List<String?> timeItems = [
-    '1 min',
-    '2 min',
-    '3 min',
-    '4 min',
-    '5 min',
-    '6 min',
-    '7 min',
-    '8 min',
-    '9 min',
-    '10 min',
-    '11 min',
-    '12 min',
-    '13 min',
-    '14 min',
-    '15 min',
-    '16 min',
-    '17 min',
-    '18 min',
-    '19 min',
-    '20 min',
-    '21 min',
-    '22 min',
-    '23 min',
-    '24 min',
-    '25 min',
-    '26 min',
-    '27 min',
-    '28 min',
-    '29 min',
-    '30 min',
-    '35 min',
-    '40 min',
-    '45 min',
-    '50 min',
-    '55 min',
-    '60 min',
-    '65 min',
-    '70 min',
-    '75 min',
-    '80 min',
-    '85 min',
-    '90 min',
-  ];
+  List<int?> timeItems = List.generate(500, (index) => index + 1);
+  List<int?> serveItems = List.generate(50, (index) => index + 1);
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<RecipeProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -114,14 +68,20 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               child: Stack(
                 children: [
                   Center(
-                    child: Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.amber,
-                      ),
-                    ),
+                    child: provider.image != null
+                        ? Image.file(
+                            provider.image!,
+                            width: double.infinity,
+                            height: 200,
+                          )
+                        : Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.amber,
+                            ),
+                          ),
                   ),
                   Column(
                     children: [
@@ -137,8 +97,11 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               borderRadius: BorderRadius.circular(50),
                             ),
                             child: IconButton(
-                                onPressed: () {},
-                                icon: Image.asset('assets/image/edit.png')),
+                              onPressed: () {
+                                pickImage(context, ImageSource.gallery);
+                              },
+                              icon: Image.asset('assets/image/edit.png'),
+                            ),
                           ),
                           const SizedBox(width: 8),
                         ],
@@ -158,7 +121,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       children: [
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: _titleController,
+                          controller: provider.titleController,
                           decoration: InputDecoration(
                             hintText: 'Enter your recipe title',
                             enabledBorder: OutlineInputBorder(
@@ -177,8 +140,27 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          controller: provider.caloriesController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter food/drink calories (per 1 serve)',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 1),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: colorStyle.base,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
                           readOnly: true,
-                          controller: _serveController,
+                          controller: provider.servesController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: colorStyle.textField,
@@ -207,12 +189,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                                       int index) {
                                                 return ListTile(
                                                   title: Text(
-                                                    serveItems[index]!,
+                                                    serveItems[index]!
+                                                        .toString(),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   onTap: () {
-                                                    _serveController.text =
-                                                        serveItems[index]!;
+                                                    provider.servesController
+                                                            .text =
+                                                        serveItems[index]!
+                                                            .toString();
                                                     Navigator.pop(context);
                                                   },
                                                 );
@@ -241,7 +226,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         const SizedBox(height: 20),
                         TextFormField(
                           readOnly: true,
-                          controller: _timeController,
+                          controller: provider.cookTimeController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: colorStyle.textField,
@@ -270,12 +255,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                                       int index) {
                                                 return ListTile(
                                                   title: Text(
-                                                    timeItems[index]!,
+                                                    timeItems[index]!
+                                                        .toString(),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   onTap: () {
-                                                    _timeController.text =
-                                                        timeItems[index]!;
+                                                    provider.cookTimeController
+                                                            .text =
+                                                        timeItems[index]!
+                                                            .toString();
                                                     Navigator.pop(context);
                                                   },
                                                 );
@@ -316,7 +304,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: _ingredientsController,
+                          controller: provider.ingredientsController,
                           maxLines: 15,
                           maxLength: 1000,
                           decoration: InputDecoration(
@@ -350,7 +338,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: _stepsController,
+                          controller: provider.stepsController,
                           maxLines: 15,
                           maxLength: 10000,
                           decoration: InputDecoration(
@@ -375,21 +363,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   addRecipeProvider.addRecipe(RecipeModel(
-                      //     title: _titleController.text,
-                      //     serves: _serveController.text,
-                      //     cookTime: _timeController.text,
-                      //     ingredients: _ingredientsController.text,
-                      //     steps: _stepsController.text,
-                      //   ));
-                      //   Navigator.pushReplacementNamed(context, '/');
-                      //   _titleController.clear();
-                      //   _serveController.clear();
-                      //   _timeController.clear();
-                      //   _ingredientsController.clear();
-                      //   _stepsController.clear();
-                      // }
+                      provider.insertNewRecipe();
+                      provider.titleController.clear();
+                      provider.caloriesController.clear();
+                      provider.servesController.clear();
+                      provider.cookTimeController.clear();
+                      provider.ingredientsController.clear();
+                      provider.stepsController.clear();
+                      Navigator.pushReplacementNamed(context, '/');
+                      provider.image = null;
                     },
                     style: ButtonStyle(
                         fixedSize: const MaterialStatePropertyAll(
