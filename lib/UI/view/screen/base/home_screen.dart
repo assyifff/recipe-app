@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:image_card/image_card.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/UI/view/screen/show_recipe_list_screen.dart';
+import 'package:recipe_app/UI/view/screen/other/show_recipe_list_screen.dart';
+
 import 'package:recipe_app/UI/view/style/color_style.dart';
 import 'package:recipe_app/UI/view/widget/home_widget/show_recipe_added_widget.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/UI/view/screen/home_screen.dart';
-import 'package:recipe_app/UI/view/screen/notification_screen.dart';
-import 'package:recipe_app/UI/view/screen/profile_screen.dart';
-import 'package:recipe_app/UI/view/screen/saved_recipe_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/home_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/notification_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/profile_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/saved_recipe_screen.dart';
 
 class InitialBottomProvider with ChangeNotifier {
   int _currentTab = 0;

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/UI/view/screen/show_detail_recipe_screen.dart';
+import 'package:recipe_app/UI/view/screen/other/show_detail_recipe_screen.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
 

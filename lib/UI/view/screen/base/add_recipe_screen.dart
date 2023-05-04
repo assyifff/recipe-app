@@ -20,10 +20,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     final image = await ImagePicker().pickImage(source: source);
     if (image == null) return;
     // ignore: use_build_context_synchronously
-    final picked = Provider.of<RecipeProvider>(context, listen: false).image =
+    Provider.of<RecipeProvider>(context, listen: false).image =
         File(image.path);
     setState(() {});
-    print('image picked $picked');
   }
 
   List<int?> timeItems = List.generate(500, (index) => index + 1);
@@ -43,26 +42,36 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 right: 16,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      provider.titleController.clear();
+                      provider.caloriesController.clear();
+                      provider.servesController.clear();
+                      provider.cookTimeController.clear();
+                      provider.stepsController.clear();
+                      provider.ingredientsController.clear();
+                      Navigator.of(context).pop();
+                      provider.image = null;
+                    },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const Icon(Icons.more_horiz)
+                  // const Icon(Icons.more_horiz)
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'Create recipe',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Create recipe',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              ),
-            ),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 29),
               child: Stack(
@@ -79,7 +88,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Colors.amber,
+                              color: colorStyle.base,
                             ),
                           ),
                   ),
@@ -140,6 +149,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          keyboardType: TextInputType.number,
                           controller: provider.caloriesController,
                           decoration: InputDecoration(
                             hintText: 'Enter food/drink calories (per 1 serve)',
@@ -233,7 +243,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             prefixIcon: const Icon(Icons.timer),
                             prefixIconColor: colorStyle.base,
                             suffixIconColor: colorStyle.base,
-                            hintText: 'Cook time',
+                            hintText: 'Cook time (min)',
                             suffixIcon: IconButton(
                               onPressed: () {
                                 showModalBottomSheet(
