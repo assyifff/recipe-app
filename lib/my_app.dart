@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/UI/view/screen/add_recipe_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/add_recipe_screen.dart';
 import 'package:recipe_app/UI/view/widget/bottom_base_widget/initial_bottom_widget.dart';
 import 'package:recipe_app/UI/view_model/initial_bottom_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
