@@ -15,6 +15,7 @@ class ShowRecipeListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<RecipeProvider>(context, listen: false);
     return InkWell(
       onTap: (() {
         Navigator.push(
@@ -83,8 +84,7 @@ class ShowRecipeListWidget extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: () {
-                            // Provider.of<RecipeProvider>(context, listen: false)
-                            //     .updateIsFavorite(recipeModel);
+                            provider.updateIsSaved(recipeModel);
                           },
                           child: recipeModel.isSaved
                               ? const Icon(

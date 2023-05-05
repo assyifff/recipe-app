@@ -70,7 +70,7 @@ class RecipeHelper {
         whereArgs: [recipeModel.id]);
   }
 
-  updateIsFavorite(RecipeModel recipeModel) {
+  updateIsSaved(RecipeModel recipeModel) {
     database.update(tableName, {isSavedColumn: !recipeModel.isSaved ? 1 : 0},
         where: '$idColumn=?', whereArgs: [recipeModel.id]);
   }
