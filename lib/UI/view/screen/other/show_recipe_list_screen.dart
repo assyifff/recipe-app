@@ -12,7 +12,6 @@ class ShowRecipeListScreen extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           children: [
-            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(
                 left: 8,
