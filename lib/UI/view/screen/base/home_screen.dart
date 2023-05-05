@@ -1,9 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/UI/view/screen/other/search_recipe_screen.dart';
 import 'package:recipe_app/UI/view/screen/other/show_recipe_list_screen.dart';
-
 import 'package:recipe_app/UI/view/style/color_style.dart';
 import 'package:recipe_app/UI/view/widget/home_widget/show_recipe_added_widget.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
@@ -25,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<RecipeProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -49,15 +49,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 top: 28,
               ),
               child: TextField(
+                cursorColor: colorStyle.base,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.search,
+                    color: colorStyle.base,
                   ),
                   hintText: 'Search recipes',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide(color: colorStyle.base),
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) =>
+                          SearchRecipeScreen(recipes: provider.allRecipes)),
+                    ),
+                  );
+                },
               ),
             ),
             Column(
