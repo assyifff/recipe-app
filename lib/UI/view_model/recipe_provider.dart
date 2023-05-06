@@ -53,8 +53,8 @@ class RecipeProvider extends ChangeNotifier {
     getRecipes();
   }
 
-  updateIsFavorite(RecipeModel recipeModel) {
-    RecipeHelper.recipeHelper.updateIsFavorite(recipeModel);
+  updateIsSaved(RecipeModel recipeModel) {
+    RecipeHelper.recipeHelper.updateIsSaved(recipeModel);
     getRecipes();
   }
 

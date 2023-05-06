@@ -51,11 +51,11 @@ class BottomItems extends StatelessWidget {
           children: [
             MaterialButton(
               onPressed: () {
-                provider.notificationTab();
+                provider.calorieTab();
               },
               shape: const CircleBorder(),
               child: Icon(
-                (Icons.notifications),
+                (Icons.local_dining),
                 color: provider.currentTab == 3
                     ? colorStyle.base
                     : Colors.black.withOpacity(0.2),
