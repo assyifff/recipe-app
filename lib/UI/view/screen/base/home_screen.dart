@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/UI/view/screen/base/calculate_calorie_screen.dart';
 import 'package:recipe_app/UI/view/screen/other/search_recipe_screen.dart';
 import 'package:recipe_app/UI/view/screen/other/show_recipe_list_screen.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
 import 'package:recipe_app/UI/view/widget/home_widget/show_recipe_added_widget.dart';
+import 'package:recipe_app/UI/view_model/calorie_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,10 +23,32 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isAppetizerPressed = false;
   bool isNoodlePressed = false;
   bool isLunchPressed = false;
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final calorieProvider =
+          Provider.of<CalorieProvider>(context, listen: false);
+      await calorieProvider.loadCaloriesFromPrefs();
+      _heightController.text = calorieProvider.heightController.text;
+      _weightController.text = calorieProvider.weightController.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    _heightController.dispose();
+    _weightController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<RecipeProvider>(context, listen: false);
+    final recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
+    final calorieProvider = Provider.of<CalorieProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -67,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) =>
-                          SearchRecipeScreen(recipes: provider.allRecipes)),
+                      builder: ((context) => SearchRecipeScreen(
+                          recipes: recipeProvider.allRecipes)),
                     ),
                   );
                 },
@@ -76,9 +100,80 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Column(
               children: [
-                const SizedBox(
-                  height: 20,
+                const SizedBox(height: 20),
+                Card(
+                  color: colorStyle.textField,
+                  elevation: 3,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Youy daily calorie intake',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w700),
+                            ),
+                            const Text(
+                              'should be',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              children: [
+                                Text(
+                                  // '${showCalorieProvider.caloriesPerDay ?? '-'}',
+                                  '${calorieProvider.caloriesPerDay ?? 0}',
+                                  style: const TextStyle(
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 10.0),
+                                const Text(
+                                  'kcal',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  '/day',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CalculateCalorieScreen()));
+                            },
+                            icon: const Icon(Icons.arrow_forward_ios))
+                      ],
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,

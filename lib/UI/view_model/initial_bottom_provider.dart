@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/UI/view/screen/base/home_screen.dart';
-import 'package:recipe_app/UI/view/screen/base/notification_screen.dart';
+import 'package:recipe_app/UI/view/screen/base/calculate_calorie_screen.dart';
 import 'package:recipe_app/UI/view/screen/base/profile_screen.dart';
 import 'package:recipe_app/UI/view/screen/base/saved_recipe_screen.dart';
 
@@ -9,7 +9,7 @@ class InitialBottomProvider with ChangeNotifier {
   final List<Widget> screens = [
     const HomeScreen(),
     const SavedRecipeScreen(),
-    const NotificationScreen(),
+    const CalculateCalorieScreen(),
     const ProfileScreen(),
   ];
   Widget _currentScreen = const HomeScreen();
@@ -29,7 +29,7 @@ class InitialBottomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void notificationTab() {
+  void calorieTab() {
     _currentScreen = screens[2];
     _currentTab = 3;
     notifyListeners();
