@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
+import 'package:recipe_app/UI/view_model/edit_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
 
@@ -22,7 +25,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
   Future pickImage(BuildContext context, ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
     if (image == null) return;
-    // ignore: use_build_context_synchronously
+
     Provider.of<RecipeProvider>(context, listen: false).image =
         File(image.path);
     setState(() {});
@@ -74,8 +77,9 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Consumer<RecipeProvider>(
-            builder: (context, provider, child) => SingleChildScrollView(
+          Consumer2<RecipeProvider, EditRecipeProvider>(
+            builder: (context, provider, editProvider, child) =>
+                SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(5),
                 child: Column(
@@ -86,9 +90,9 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                       child: Stack(
                         children: [
                           FutureBuilder<File?>(
-                            future: Provider.of<RecipeProvider>(context,
-                                    listen: false)
-                                .getImageFile(provider.image?.path),
+                            future: Provider.of<RecipeProvider>(
+                              context,
+                            ).getImageFile(provider.image?.path),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                       ConnectionState.done &&
@@ -110,22 +114,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               }
                             },
                           ),
-                          // Center(
-                          //   child: provider.image != null
-                          //       ? Image.file(
-                          //           provider.image!,
-                          //           width: double.infinity,
-                          //           height: 200,
-                          //         )
-                          //       : Container(
-                          //           height: 200,
-                          //           width: double.infinity,
-                          //           decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.circular(20),
-                          //             color: colorStyle.base,
-                          //           ),
-                          //         ),
-                          // ),
                           Column(
                             children: [
                               const SizedBox(height: 8),
@@ -141,7 +129,10 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                     ),
                                     child: IconButton(
                                       onPressed: () {
-                                        pickImage(context, ImageSource.gallery);
+                                        pickImage(
+                                          context,
+                                          ImageSource.gallery,
+                                        );
                                       },
                                       icon:
                                           Image.asset('assets/image/edit.png'),
@@ -151,7 +142,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 ],
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),

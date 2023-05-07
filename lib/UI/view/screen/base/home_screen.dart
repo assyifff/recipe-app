@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               children: [
                                 Text(
-                                  // '${showCalorieProvider.caloriesPerDay ?? '-'}',
                                   '${calorieProvider.caloriesPerDay ?? 0}',
                                   style: const TextStyle(
                                     fontSize: 30.0,
