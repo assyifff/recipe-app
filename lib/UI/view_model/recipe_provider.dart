@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:recipe_app/core/helper/recipe_helper.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
 
@@ -72,12 +70,5 @@ class RecipeProvider extends ChangeNotifier {
     } else {
       return null;
     }
-  }
-
-  Future<void> pickImage(BuildContext context, ImageSource source) async {
-    final image = await ImagePicker().pickImage(source: source);
-    if (image == null) return;
-    _image = File(image.path);
-    notifyListeners();
   }
 }
