@@ -6,6 +6,7 @@ import 'package:recipe_app/UI/view_model/add_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/calorie_provider.dart';
 import 'package:recipe_app/UI/view_model/initial_bottom_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
+import 'package:recipe_app/UI/view_model/recipe_trending_provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AddRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RecipeTrendingProvider(),
         ),
       ],
       child: MaterialApp(
