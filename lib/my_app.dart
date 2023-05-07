@@ -8,6 +8,7 @@ import 'package:recipe_app/UI/view_model/edit_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/initial_bottom_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_trending_provider.dart';
+import 'package:recipe_app/UI/view_model/search_recipe_provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => EditRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchRecipeProvider(),
         ),
       ],
       child: MaterialApp(
