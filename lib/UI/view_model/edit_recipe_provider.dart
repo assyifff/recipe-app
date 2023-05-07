@@ -23,6 +23,10 @@ class EditRecipeProvider extends ChangeNotifier {
     return null;
   }
 
+  void clearImage() {
+    _image = null;
+  }
+
   String? validateCalorie(String? value) {
     final number = int.tryParse(value ?? '');
     if (number == null) {
