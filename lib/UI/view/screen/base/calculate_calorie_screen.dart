@@ -15,16 +15,6 @@ class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
   final ColorStyle colorStyle = ColorStyle();
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final calorieProvider =
-          Provider.of<CalorieProvider>(context, listen: false);
-      await calorieProvider.loadCaloriesFromPrefs();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final calorieProvider =
         Provider.of<CalorieProvider>(context, listen: false);
@@ -50,15 +40,13 @@ class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
                 IconButton(
                   onPressed: () {
                     calorieProvider.clearCaloriesFromPrefs();
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Your calorie: ${calorieProvider.caloriesPerDay ?? 0}! Please check your calories in home',
-                          ),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Your calorie: 0! Please check your calories in home',
                         ),
-                      );
-                    }
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.restore),
                 ),
