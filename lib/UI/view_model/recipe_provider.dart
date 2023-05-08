@@ -15,18 +15,16 @@ class RecipeProvider extends ChangeNotifier {
   TextEditingController stepsController = TextEditingController();
   TextEditingController ingredientsController = TextEditingController();
   File? image;
-  File? _image;
 
-  File? get images => _image;
   List<RecipeModel> allRecipes = [];
   List<RecipeModel> favoriteRecipes = [];
-  getRecipes() async {
+  Future<void> getRecipes() async {
     allRecipes = await RecipeHelper.recipeHelper.getAllRecipes();
     favoriteRecipes = allRecipes.where((e) => e.isSaved).toList();
     notifyListeners();
   }
 
-  insertNewRecipe() {
+  void insertNewRecipe() {
     RecipeModel recipeModel = RecipeModel(
       isSaved: false,
       title: titleController.text,
@@ -44,17 +42,17 @@ class RecipeProvider extends ChangeNotifier {
     getRecipes();
   }
 
-  updateRecipe(RecipeModel recipeModel) async {
+  void updateRecipe(RecipeModel recipeModel) async {
     await RecipeHelper.recipeHelper.updateRecipe(recipeModel);
     getRecipes();
   }
 
-  deleteRecipe(RecipeModel recipeModel) {
+  void deleteRecipe(RecipeModel recipeModel) {
     RecipeHelper.recipeHelper.deleteRecipe(recipeModel);
     getRecipes();
   }
 
-  updateIsSaved(RecipeModel recipeModel) {
+  void updateIsSaved(RecipeModel recipeModel) {
     RecipeHelper.recipeHelper.updateIsSaved(recipeModel);
     getRecipes();
   }

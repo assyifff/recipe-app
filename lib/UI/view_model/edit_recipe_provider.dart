@@ -15,14 +15,6 @@ class EditRecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<File?> getImageFile(String? imagePath) async {
-    if (imagePath == null || imagePath.isEmpty) {
-      return null;
-    }
-
-    return null;
-  }
-
   void clearImage() {
     _image = null;
   }

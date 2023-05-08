@@ -6,6 +6,7 @@ import 'package:recipe_app/UI/view_model/add_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/calorie_provider.dart';
 import 'package:recipe_app/UI/view_model/edit_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/initial_bottom_provider.dart';
+import 'package:recipe_app/UI/view_model/profile_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_trending_provider.dart';
 import 'package:recipe_app/UI/view_model/search_recipe_provider.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => SearchRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileProvider(),
         ),
       ],
       child: MaterialApp(

@@ -6,9 +6,9 @@ import 'package:recipe_app/UI/view_model/add_recipe_provider.dart';
 
 class BuildImagePickerWidget extends StatelessWidget {
   const BuildImagePickerWidget({
-    super.key,
+    Key? key,
     required this.colorStyle,
-  });
+  }) : super(key: key);
 
   final ColorStyle colorStyle;
 

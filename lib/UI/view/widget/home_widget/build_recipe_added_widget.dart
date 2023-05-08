@@ -70,20 +70,26 @@ class BuildRecipeAddedWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Consumer<RecipeProvider>(builder: (context, provider, child) {
             return SizedBox(
-              height: 240,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: min(4, provider.allRecipes.length),
-                itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: 150,
-                    child: ShowRecipeAddedWidget(provider.allRecipes[index]),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(width: 8);
-                },
-              ),
+              height: 260,
+              child: provider.allRecipes.isNotEmpty
+                  ? ListView.separated(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: min(4, provider.allRecipes.length),
+                      itemBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          width: 150,
+                          child:
+                              ShowRecipeAddedWidget(provider.allRecipes[index]),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(width: 8);
+                      },
+                    )
+                  : const Center(
+                      child: Text('Recipe not found...'),
+                    ),
             );
           }),
         ),

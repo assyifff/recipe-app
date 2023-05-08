@@ -12,7 +12,7 @@ class CalculateCalorieScreen extends StatefulWidget {
 }
 
 class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
-  ColorStyle colorStyle = ColorStyle();
+  final ColorStyle colorStyle = ColorStyle();
 
   @override
   void initState() {
@@ -21,6 +21,7 @@ class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
       final calorieProvider =
           Provider.of<CalorieProvider>(context, listen: false);
       await calorieProvider.loadCaloriesFromPrefs();
+      await calorieProvider.clearCaloriesFromPrefs();
     });
   }
 
@@ -32,17 +33,37 @@ class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
       body: ListView(
         children: [
           const SizedBox(height: 16),
-          const Padding(
-            padding: EdgeInsets.only(
+          Padding(
+            padding: const EdgeInsets.only(
               left: 28,
               top: 16,
             ),
-            child: Text(
-              'Calculate calories',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 24,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Calculate calories',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    calorieProvider.clearCaloriesFromPrefs();
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Your calorie: ${calorieProvider.caloriesPerDay ?? 0}! Please check your calories in home',
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.restore),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),

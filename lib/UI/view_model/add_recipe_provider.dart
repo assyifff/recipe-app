@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,6 +12,10 @@ class AddRecipeProvider extends ChangeNotifier {
     if (image == null) return;
     _image = File(image.path);
     notifyListeners();
+  }
+
+  void clearImage() {
+    _image = null;
   }
 
   String? validateCalorie(String? value) {
