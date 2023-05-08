@@ -21,7 +21,6 @@ class _CalculateCalorieScreenState extends State<CalculateCalorieScreen> {
       final calorieProvider =
           Provider.of<CalorieProvider>(context, listen: false);
       await calorieProvider.loadCaloriesFromPrefs();
-      await calorieProvider.clearCaloriesFromPrefs();
     });
   }
 
