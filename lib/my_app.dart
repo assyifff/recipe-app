@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/screen/base/add_recipe_screen.dart';
 import 'package:recipe_app/UI/view/widget/bottom_base_widget/initial_bottom_widget.dart';
+import 'package:recipe_app/UI/view_model/add_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/calorie_provider.dart';
+import 'package:recipe_app/UI/view_model/edit_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/initial_bottom_provider.dart';
+import 'package:recipe_app/UI/view_model/profile_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
+import 'package:recipe_app/UI/view_model/recipe_trending_provider.dart';
+import 'package:recipe_app/UI/view_model/search_recipe_provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,6 +26,21 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => CalorieProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AddRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RecipeTrendingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => EditRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchRecipeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileProvider(),
         ),
       ],
       child: MaterialApp(

@@ -37,4 +37,12 @@ class CalorieProvider extends ChangeNotifier {
     _caloriesPerDay = null;
     notifyListeners();
   }
+
+  String? validateCalorie(String? value) {
+    final number = int.tryParse(value ?? '');
+    if (number == null) {
+      return 'Please enter a valid calorie!';
+    }
+    return null;
+  }
 }

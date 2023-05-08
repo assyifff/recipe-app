@@ -11,12 +11,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   provider: ^6.0.5
-  image_card: ^0.0.4
   sqflite: ^2.2.7
   path: ^1.8.2
   path_provider: ^2.0.11
   image_picker: ^0.8.6
   shared_preferences: ^2.1.0
+  mockito: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +28,10 @@ flutter:
   assets:
     - assets/image/edit.png
     - assets/image/food_logo.jpg
+    - assets/image/fruit_sando.jpg
+    - assets/image/miso_soup.jpg
+    - assets/image/tomyam_udang.jpg
+    - assets/image/carbonara_udon.jpg
     
   fonts:
     - family: Poppins

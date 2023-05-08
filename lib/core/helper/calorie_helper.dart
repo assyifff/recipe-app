@@ -1,4 +1,3 @@
-// ignore_for_file: file_names
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:recipe_app/core/model/calorie_model.dart';
@@ -29,32 +28,7 @@ class CalorieHelper {
     );
   }
 
-  Future<List<CalorieModel>> getAllCalorie() async {
-    List<Map<String, dynamic>> tasks = await database.query(tableName);
-    return tasks.map((e) => CalorieModel.fromMap(e)).toList();
-  }
-
   insertNewCalorie(CalorieModel calorieModel) {
     database.insert(tableName, calorieModel.toMap());
-  }
-
-  deleteCalorie(CalorieModel calorieModel) {
-    database
-        .delete(tableName, where: '$idColumn=?', whereArgs: [calorieModel.id]);
-  }
-
-  deleteAllCalories() {
-    database.delete(tableName);
-  }
-
-  updateCalorie(CalorieModel calorieModel) async {
-    await database.update(
-        tableName,
-        {
-          heightColumn: calorieModel.height,
-          weightColumn: calorieModel.weight,
-        },
-        where: '$idColumn=?',
-        whereArgs: [calorieModel.id]);
   }
 }

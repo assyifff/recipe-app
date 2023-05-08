@@ -1,4 +1,3 @@
-// ignore_for_file: file_names
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
@@ -48,10 +47,6 @@ class RecipeHelper {
     database
         .delete(tableName, where: '$idColumn=?', whereArgs: [recipeModel.id]);
   }
-
-  // deleteRecipes() {
-  //   database.delete(tableName);
-  // }
 
   updateRecipe(RecipeModel recipeModel) async {
     await database.update(

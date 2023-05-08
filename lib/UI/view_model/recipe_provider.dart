@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/helper/recipe_helper.dart';
 import 'package:recipe_app/core/model/recipe_model.dart';
@@ -19,13 +18,13 @@ class RecipeProvider extends ChangeNotifier {
 
   List<RecipeModel> allRecipes = [];
   List<RecipeModel> favoriteRecipes = [];
-  getRecipes() async {
+  Future<void> getRecipes() async {
     allRecipes = await RecipeHelper.recipeHelper.getAllRecipes();
     favoriteRecipes = allRecipes.where((e) => e.isSaved).toList();
     notifyListeners();
   }
 
-  insertNewRecipe() {
+  void insertNewRecipe() {
     RecipeModel recipeModel = RecipeModel(
       isSaved: false,
       title: titleController.text,
@@ -43,17 +42,17 @@ class RecipeProvider extends ChangeNotifier {
     getRecipes();
   }
 
-  updateRecipe(RecipeModel recipeModel) async {
+  void updateRecipe(RecipeModel recipeModel) async {
     await RecipeHelper.recipeHelper.updateRecipe(recipeModel);
     getRecipes();
   }
 
-  deleteRecipe(RecipeModel recipeModel) {
+  void deleteRecipe(RecipeModel recipeModel) {
     RecipeHelper.recipeHelper.deleteRecipe(recipeModel);
     getRecipes();
   }
 
-  updateIsSaved(RecipeModel recipeModel) {
+  void updateIsSaved(RecipeModel recipeModel) {
     RecipeHelper.recipeHelper.updateIsSaved(recipeModel);
     getRecipes();
   }
