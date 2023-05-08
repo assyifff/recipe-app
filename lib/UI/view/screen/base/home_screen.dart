@@ -17,8 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ColorStyle colorStyle = ColorStyle();
-
+  final ColorStyle colorStyle = ColorStyle();
   @override
   void initState() {
     super.initState();

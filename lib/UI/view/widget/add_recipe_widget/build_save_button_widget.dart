@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/style/color_style.dart';
+import 'package:recipe_app/UI/view_model/add_recipe_provider.dart';
 import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 
 class BuildSaveButtonWidget extends StatelessWidget {
@@ -16,9 +18,11 @@ class BuildSaveButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final addProvider = Provider.of<AddRecipeProvider>(context, listen: false);
     return ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
+        recipeProvider.image = addProvider.image;
+        if (_formKey.currentState!.validate() && addProvider.image != null) {
           recipeProvider.insertNewRecipe();
           recipeProvider.titleController.clear();
           recipeProvider.caloriesController.clear();
@@ -26,8 +30,15 @@ class BuildSaveButtonWidget extends StatelessWidget {
           recipeProvider.cookTimeController.clear();
           recipeProvider.ingredientsController.clear();
           recipeProvider.stepsController.clear();
+          _formKey.currentState!.reset();
           Navigator.pushReplacementNamed(context, '/');
-          recipeProvider.image = null;
+          addProvider.clearImage();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error! image must be uploaded'),
+            ),
+          );
         }
       },
       style: ButtonStyle(

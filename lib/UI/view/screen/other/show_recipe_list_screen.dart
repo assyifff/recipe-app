@@ -19,7 +19,6 @@ class ShowRecipeListScreen extends StatelessWidget {
                 right: 16,
               ),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     onPressed: () {
@@ -27,7 +26,6 @@ class ShowRecipeListScreen extends StatelessWidget {
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  // const Icon(Icons.more_horiz)
                   const Padding(
                     padding: EdgeInsets.all(20),
                     child: Text(
@@ -44,13 +42,18 @@ class ShowRecipeListScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Consumer<RecipeProvider>(
               builder: (context, provider, child) {
-                return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: provider.allRecipes.length,
-                    itemBuilder: (context, index) {
-                      return ShowRecipeListWidget(provider.allRecipes[index]);
-                    });
+                return provider.allRecipes.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: provider.allRecipes.length,
+                        itemBuilder: (context, index) {
+                          return ShowRecipeListWidget(
+                              provider.allRecipes[index]);
+                        })
+                    : const Center(
+                        child: Text('Recipe not found...'),
+                      );
               },
             ),
             const SizedBox(height: 20),

@@ -16,10 +16,10 @@ class EditRecipeScreen extends StatefulWidget {
 }
 
 class _EditRecipeScreenState extends State<EditRecipeScreen> {
-  ColorStyle colorStyle = ColorStyle();
+  final ColorStyle colorStyle = ColorStyle();
 
-  List<int?> timeItems = List.generate(500, (index) => index + 1);
-  List<int?> serveItems = List.generate(50, (index) => index + 1);
+  final List<int?> timeItems = List.generate(500, (index) => index + 1);
+  final List<int?> serveItems = List.generate(50, (index) => index + 1);
   final _formKey = GlobalKey<FormState>();
 
   @override

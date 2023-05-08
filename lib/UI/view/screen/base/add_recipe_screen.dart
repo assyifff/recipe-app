@@ -14,10 +14,10 @@ class AddRecipeScreen extends StatefulWidget {
 }
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
-  ColorStyle colorStyle = ColorStyle();
+  final ColorStyle colorStyle = ColorStyle();
   final _formKey = GlobalKey<FormState>();
-  List<int?> timeItems = List.generate(500, (index) => index + 1);
-  List<int?> serveItems = List.generate(50, (index) => index + 1);
+  final List<int?> timeItems = List.generate(500, (index) => index + 1);
+  final List<int?> serveItems = List.generate(50, (index) => index + 1);
 
   @override
   Widget build(BuildContext context) {

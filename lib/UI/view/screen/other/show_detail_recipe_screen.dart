@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/UI/view/screen/other/edit_recipe_screen.dart';
@@ -12,7 +11,7 @@ class ShowDetailRecipeScreen extends StatelessWidget {
 
   ShowDetailRecipeScreen({super.key, required this.recipeModel});
 
-  ColorStyle colorStyle = ColorStyle();
+  final ColorStyle colorStyle = ColorStyle();
 
   @override
   Widget build(BuildContext context) {

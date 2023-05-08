@@ -4,7 +4,7 @@ import 'package:recipe_app/UI/view/style/color_style.dart';
 import 'package:recipe_app/UI/view_model/calorie_provider.dart';
 
 class CalorieFormWidget extends StatelessWidget {
-  const CalorieFormWidget({
+  CalorieFormWidget({
     super.key,
     required this.calorieProvider,
     required this.colorStyle,
@@ -14,17 +14,21 @@ class CalorieFormWidget extends StatelessWidget {
   final CalorieProvider calorieProvider;
   final ColorStyle colorStyle;
   final bool mounted;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
+        key: _formKey,
         child: Column(
           children: [
             TextFormField(
               keyboardType: TextInputType.number,
               controller: calorieProvider.heightController,
+              validator: calorieProvider.validateCalorie,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 hintText: 'Enter your height (cm)',
                 enabledBorder: OutlineInputBorder(
@@ -40,12 +44,28 @@ class CalorieFormWidget extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(25),
                 ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: colorStyle.base,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: colorStyle.base,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
               ),
             ),
             const SizedBox(height: 16),
             TextFormField(
               keyboardType: TextInputType.number,
               controller: calorieProvider.weightController,
+              validator: calorieProvider.validateCalorie,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 hintText: 'Enter your weight (kg)',
                 enabledBorder: OutlineInputBorder(
@@ -61,6 +81,20 @@ class CalorieFormWidget extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(25),
                 ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: colorStyle.base,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: colorStyle.base,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
               ),
             ),
             Consumer<CalorieProvider>(
@@ -70,20 +104,31 @@ class CalorieFormWidget extends StatelessWidget {
                   const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: () async {
-                      final height =
-                          int.tryParse(calorieProvider.heightController.text) ??
-                              0;
-                      final weight =
-                          int.tryParse(calorieProvider.weightController.text) ??
-                              0;
-                      await calorieProvider.calculateCalories(height, weight);
-                      calorieProvider.heightController.clear();
-                      calorieProvider.weightController.clear();
-                      if (mounted) {
+                      if (_formKey.currentState!.validate()) {
+                        final height = int.tryParse(
+                                calorieProvider.heightController.text) ??
+                            0;
+                        final weight = int.tryParse(
+                                calorieProvider.weightController.text) ??
+                            0;
+                        await calorieProvider.calculateCalories(height, weight);
+                        calorieProvider.heightController.clear();
+                        calorieProvider.weightController.clear();
+                        _formKey.currentState!.reset();
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Your calorie: ${calorieProvider.caloriesPerDay ?? 0}! Please check your calories in home',
+                              ),
+                            ),
+                          );
+                        }
+                      } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text(
-                              'Your calorie: ${calorieProvider.caloriesPerDay ?? 0}! Please check your calories in home',
+                              'There is an error!',
                             ),
                           ),
                         );

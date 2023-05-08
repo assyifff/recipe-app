@@ -5,6 +5,7 @@ import 'package:recipe_app/UI/view_model/recipe_provider.dart';
 
 class SavedRecipeScreen extends StatelessWidget {
   const SavedRecipeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeProvider>(
@@ -27,14 +28,19 @@ class SavedRecipeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 35),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: provider.favoriteRecipes.length,
-                itemBuilder: (context, index) {
-                  return ShowRecipeListWidget(provider.favoriteRecipes[index]);
-                },
-              ),
+              provider.favoriteRecipes.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: provider.favoriteRecipes.length,
+                      itemBuilder: (context, index) {
+                        return ShowRecipeListWidget(
+                            provider.favoriteRecipes[index]);
+                      },
+                    )
+                  : const Center(
+                      child: Text('Recipe not found...'),
+                    ),
               const SizedBox(height: 20),
             ],
           ),
